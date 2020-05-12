@@ -1,0 +1,26 @@
+@startuml
+
+    Node HomeNetwork{
+
+        actor Operator
+
+        node notePC{
+            frame Browser
+            component "Elastic\nSearch" as ElasticSearch 
+            component Kibana
+        }
+        Operator-up->Browser
+        Browser-right->Kibana
+        Kibana<-right-ElasticSearch
+
+        node raspberryPi{
+            component DHT11
+            node Python{
+                component "ElasticSearch\nClient" as elc
+            }
+        }
+        elc<-DHT11 : polling(3sec)
+        ElasticSearch<-up-elc : HTTP Request
+    }
+
+@enduml
